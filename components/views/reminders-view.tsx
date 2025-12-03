@@ -59,44 +59,60 @@ export function RemindersView() {
 
       <Card className="border-0 shadow-lg">
         <div className="p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Recurring Bills</h2>
-            <Button onClick={() => setIsAdding(true)} size="sm" className="text-white rounded-xl bg-black">
-              <Plus className="w-4 h-4 mr-1" />
-              Add Bill
-            </Button>
-          </div>
+          <h2 className="font-semibold">Recurring Bills</h2>
 
           {activeRecurring.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">
-              No recurring bills set up yet. Add one to get reminded!
-            </p>
-          ) : (
-            <div className="space-y-2">
-              {activeRecurring.map((recurring) => (
-                <div
-                  key={recurring.id}
-                  className="flex justify-between items-center py-3 px-4 rounded-xl bg-muted transition-colors"
+            <div className="space-y-4 text-center py-8">
+              <p className="text-sm text-muted-foreground">No recurring bills set up yet. Add one to get reminded!</p>
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => setIsAdding(true)}
+                  size="sm"
+                  className="bg-black text-white h-9 text-sm font-medium rounded-xl shadow-sm"
                 >
-                  <div className="space-y-0.5 flex-1">
-                    <p className="font-medium text-sm">{recurring.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      Due on day {recurring.dueDay} • {recurring.category}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <p className="font-bold">{formatAmount(recurring.amountUSD)}</p>
-                    <button
-                      onClick={() => deleteRecurringExpense(recurring.id)}
-                      className="text-destructive"
-                      aria-label="Delete reminder"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Bill
+                </Button>
+              </div>
             </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                {activeRecurring.map((recurring) => (
+                  <div
+                    key={recurring.id}
+                    className="flex justify-between items-center py-3 px-4 rounded-xl bg-muted transition-colors"
+                  >
+                    <div className="space-y-0.5 flex-1">
+                      <p className="font-medium text-sm">{recurring.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Due on day {recurring.dueDay} • {recurring.category}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <p className="font-bold">{formatAmount(recurring.amountUSD)}</p>
+                      <button
+                        onClick={() => deleteRecurringExpense(recurring.id)}
+                        className="text-destructive"
+                        aria-label="Delete reminder"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center pt-2">
+                <Button
+                  onClick={() => setIsAdding(true)}
+                  size="sm"
+                  className="bg-black text-white h-9 text-sm font-medium rounded-xl shadow-sm"
+                >
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Bill
+                </Button>
+              </div>
+            </>
           )}
         </div>
       </Card>

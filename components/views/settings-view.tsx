@@ -109,7 +109,7 @@ export function SettingsView() {
             <Button
               onClick={() => setShowResetConfirm(true)}
               variant="outline"
-              className="w-full h-11 rounded-2xl dark:border-red-800 dark:text-red-400 border-foreground text-foreground"
+              className="w-full h-11 rounded-2xl border-2 border-foreground text-foreground bg-transparent"
             >
               Reset All Data
             </Button>
@@ -119,10 +119,14 @@ export function SettingsView() {
                 Are you sure? This action cannot be undone.
               </p>
               <div className="grid grid-cols-2 gap-3">
-                <Button onClick={() => setShowResetConfirm(false)} variant="outline" className="h-11 rounded-2xl">
+                <Button
+                  onClick={() => setShowResetConfirm(false)}
+                  className="h-11 rounded-2xl border-2 border-foreground text-foreground bg-transparent"
+                  variant="outline"
+                >
                   Cancel
                 </Button>
-                <Button onClick={handleResetData} className="h-11 rounded-2xl bg-red-600 text-white">
+                <Button onClick={handleResetData} className="h-11 rounded-2xl bg-black text-white">
                   Yes, Reset All
                 </Button>
               </div>

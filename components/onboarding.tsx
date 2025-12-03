@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { useAppStore } from "@/lib/store"
+import { ChevronDown } from "lucide-react"
 
 const CURRENCIES = [
   { code: "INR", symbol: "₹", name: "Indian Rupee" },
@@ -58,6 +59,12 @@ export function Onboarding() {
       exchangeRate: rate,
     })
 
+    useAppStore.setState((state) => ({
+      user: { ...state.user!, onboardingCompleted: true },
+    }))
+  }
+
+  const handleSkipSampleExpense = () => {
     useAppStore.setState((state) => ({
       user: { ...state.user!, onboardingCompleted: true },
     }))
@@ -171,7 +178,7 @@ export function Onboarding() {
             <div className="p-8 space-y-6">
               <div>
                 <h2 className="text-2xl font-bold mb-2">Set Your Monthly Budget</h2>
-                <p className="text-sm text-muted-foreground">How much can you spend on average per month (in USD)?</p>
+                <p className="text-sm text-muted-foreground">How much do you spend on average per month (in USD)? </p>
               </div>
 
               <div className="space-y-3">
@@ -179,7 +186,9 @@ export function Onboarding() {
                   <label htmlFor="budget-input" className="sr-only">
                     Monthly Budget in USD
                   </label>
-                  <span className="absolute left-3 top-3 text-lg font-semibold text-muted-foreground">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lg font-semibold text-muted-foreground">
+                    $
+                  </span>
                   <Input
                     id="budget-input"
                     type="number"
@@ -222,7 +231,7 @@ export function Onboarding() {
                     Amount (USD)
                   </label>
                   <div className="relative mt-2">
-                    <span className="absolute left-3 top-3 text-lg font-semibold">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lg font-semibold">$</span>
                     <Input
                       id="sample-amount"
                       type="number"
@@ -238,33 +247,43 @@ export function Onboarding() {
                   <label htmlFor="sample-category" className="text-sm font-medium">
                     Category
                   </label>
-                  <select
-                    id="sample-category"
-                    value={sampleCategory}
-                    onChange={(e) => setSampleCategory(e.target.value)}
-                    className="w-full mt-2 px-3 py-2 border rounded-xl bg-background"
-                  >
-                    <option>Food</option>
-                    <option>Groceries</option>
-                    <option>Transport</option>
-                    <option>Utilities</option>
-                    <option>Shopping</option>
-                    <option>School</option>
-                  </select>
+                  <div className="relative mt-2">
+                    <select
+                      id="sample-category"
+                      value={sampleCategory}
+                      onChange={(e) => setSampleCategory(e.target.value)}
+                      className="w-full px-3 py-2.5 pr-10 border rounded-xl bg-background appearance-none"
+                    >
+                      <option>Food</option>
+                      <option>Groceries</option>
+                      <option>Transport</option>
+                      <option>Utilities</option>
+                      <option>Shopping</option>
+                      <option>School</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
+                  </div>
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <Button onClick={() => setStep("budget")} variant="outline" className="flex-1 rounded-xl">
-                  Back
-                </Button>
-                <Button
-                  onClick={handleSampleExpense}
-                  disabled={!sampleAmount}
-                  className="flex-1 bg-blue-600 text-white rounded-xl"
-                >
-                  Complete Setup
-                </Button>
+              <div className="space-y-3">
+                <div className="flex gap-3">
+                  <Button onClick={() => setStep("budget")} variant="outline" className="flex-1 rounded-xl">
+                    Back
+                  </Button>
+                  <Button
+                    onClick={handleSampleExpense}
+                    disabled={!sampleAmount}
+                    className="flex-1 bg-blue-600 text-white rounded-xl"
+                  >
+                    Complete Setup
+                  </Button>
+                </div>
+                <div className="flex justify-end">
+                  <button onClick={handleSkipSampleExpense} className="text-sm text-muted-foreground underline">
+                    Skip
+                  </button>
+                </div>
               </div>
             </div>
           </Card>
