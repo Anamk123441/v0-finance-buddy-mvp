@@ -40,7 +40,7 @@ export interface RecurringExpense {
   name: string
   amountUSD: number
   dueDay: number
-  frequency: "monthly" | "semester"
+  frequency: "monthly" | "spring-semester" | "fall-semester"
   category: string
   active: boolean
   notifiedMonths: string[]
@@ -112,7 +112,7 @@ interface AppStore {
     amountUSD: number
     dueDay: number
     category: string
-    frequency: "monthly" | "semester"
+    frequency: "monthly" | "spring-semester" | "fall-semester"
   }) => void
   getRecurringExpenses: () => RecurringExpense[]
   deleteRecurringExpense: (id: string) => void

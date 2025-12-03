@@ -38,30 +38,41 @@ export function DashboardView() {
     monthExpensesCount: monthExpenses.length,
   })
 
-  const budgetUSD = user?.monthlyBudget || 0
-  const budgetDisplay = showHomeCurrency ? budgetUSD * exchangeRate : budgetUSD
-  const totalDisplay = showHomeCurrency ? totalHomeCurrency : totalUSD
-  const remaining = budgetDisplay - totalDisplay
-  const spent = totalDisplay / (budgetDisplay || 1)
+  console.log("[v0] Recurring Bills Debug:", {
+    totalRecurringExpenses: recurringExpenses.length,
+    activeRecurringExpenses: recurringExpenses.filter((r) => r.active).length,
+    recurringExpenses: recurringExpenses.map((r) => ({
+      id: r.id,
+      name: r.name,
+      active: r.active,
+      dueDay: r.dueDay,
+      frequency: r.frequency,
+    })),
+  })
 
   const upcomingRecurring = recurringExpenses
     .filter((r) => r.active)
     .map((r) => {
       let daysUntilDue: number
-      if (r.frequency === "semester") {
-        // For semester bills, check if it's due in this month or 6 months later
+      if (r.frequency === "spring-semester" || r.frequency === "fall-semester") {
         const currentYear = now.getFullYear()
-        const currentMonthNum = now.getMonth()
 
-        // Check if due this month
-        if (r.dueDay >= currentDay) {
-          daysUntilDue = r.dueDay - currentDay
+        // Determine which month to use based on semester
+        const semesterMonth = r.frequency === "spring-semester" ? 0 : 7 // January (0) or August (7)
+
+        // Check this year
+        const thisYearDate = new Date(currentYear, semesterMonth, r.dueDay)
+        let nextDueDate: Date
+
+        if (thisYearDate > now) {
+          nextDueDate = thisYearDate
         } else {
-          // Check if due in 6 months
-          const sixMonthsLater = new Date(currentYear, currentMonthNum + 6, r.dueDay)
-          const diffTime = sixMonthsLater.getTime() - now.getTime()
-          daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+          // Use next year
+          nextDueDate = new Date(currentYear + 1, semesterMonth, r.dueDay)
         }
+
+        const diffTime = nextDueDate.getTime() - now.getTime()
+        daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
       } else {
         // Monthly frequency - existing logic
         if (r.dueDay >= currentDay) {
@@ -75,6 +86,16 @@ export function DashboardView() {
     })
     .sort((a, b) => a.daysUntilDue - b.daysUntilDue)
 
+  console.log("[v0] Upcoming Recurring Bills:", {
+    count: upcomingRecurring.length,
+    bills: upcomingRecurring.map((r) => ({
+      name: r.name,
+      daysUntilDue: r.daysUntilDue,
+      frequency: r.frequency,
+      dueDay: r.dueDay,
+    })),
+  })
+
   const currencySymbol = showHomeCurrency ? user?.homeCurrency || "USD" : "USD"
   const formatAmount = (amount: number) => {
     if (showHomeCurrency && currencySymbol !== "USD") {
@@ -82,6 +103,12 @@ export function DashboardView() {
     }
     return `$${formatNumberWithCommas(amount, 2)}`
   }
+
+  const budgetUSD = user?.monthlyBudget || 0
+  const budgetDisplay = showHomeCurrency ? budgetUSD * exchangeRate : budgetUSD
+  const totalDisplay = showHomeCurrency ? totalHomeCurrency : totalUSD
+  const remaining = budgetDisplay - totalDisplay
+  const spent = totalDisplay / (budgetDisplay || 1)
 
   return (
     <div className="px-4 pb-24 pt-6 space-y-6">

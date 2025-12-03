@@ -53,7 +53,7 @@ export function RecurringSetupModal({ onClose }: RecurringSetupModalProps) {
   const [amount, setAmount] = useState("")
   const [dueDay, setDueDay] = useState("1")
   const [category, setCategory] = useState("Utilities")
-  const [frequency, setFrequency] = useState<"monthly" | "semester">("monthly")
+  const [frequency, setFrequency] = useState<"monthly" | "spring-semester" | "fall-semester">("monthly")
   const [showSuccess, setShowSuccess] = useState(false)
 
   const addRecurringExpense = useAppStore((state) => state.addRecurringExpense)
@@ -158,11 +158,12 @@ export function RecurringSetupModal({ onClose }: RecurringSetupModalProps) {
                   <select
                     id="frequency"
                     value={frequency}
-                    onChange={(e) => setFrequency(e.target.value as "monthly" | "semester")}
+                    onChange={(e) => setFrequency(e.target.value as "monthly" | "spring-semester" | "fall-semester")}
                     className="w-full h-10 px-3 rounded-md border border-input bg-background appearance-none"
                   >
                     <option value="monthly">Monthly</option>
-                    <option value="semester">Every Semester (6 months)</option>
+                    <option value="spring-semester">Spring Semester (Jan-May)</option>
+                    <option value="fall-semester">Fall Semester (Aug-Dec)</option>
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                 </div>

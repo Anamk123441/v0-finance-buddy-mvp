@@ -159,7 +159,7 @@ export function Onboarding() {
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold text-balance text-primary">My Finance Buddy</h1>
                 <p className="text-sm text-muted-foreground text-balance leading-relaxed">
-                  Stay on top of your monthly spending, no matter where you are in the world
+                  Manage your money confidently as you navigate life in a new country.
                 </p>
               </div>
 
