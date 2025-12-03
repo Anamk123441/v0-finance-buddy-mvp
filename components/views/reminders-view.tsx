@@ -89,7 +89,8 @@ export function RemindersView() {
                     <div className="space-y-0.5 flex-1">
                       <p className="font-medium text-sm">{recurring.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        Due on day {recurring.dueDay} • {recurring.category}
+                        Due on day {recurring.dueDay} •{" "}
+                        {recurring.frequency === "semester" ? "Every Semester" : "Monthly"} • {recurring.category}
                       </p>
                     </div>
                     <div className="flex items-center gap-3">

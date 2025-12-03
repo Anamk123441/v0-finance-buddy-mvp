@@ -48,11 +48,28 @@ export function DashboardView() {
     .filter((r) => r.active)
     .map((r) => {
       let daysUntilDue: number
-      if (r.dueDay >= currentDay) {
-        daysUntilDue = r.dueDay - currentDay
+      if (r.frequency === "semester") {
+        // For semester bills, check if it's due in this month or 6 months later
+        const currentYear = now.getFullYear()
+        const currentMonthNum = now.getMonth()
+
+        // Check if due this month
+        if (r.dueDay >= currentDay) {
+          daysUntilDue = r.dueDay - currentDay
+        } else {
+          // Check if due in 6 months
+          const sixMonthsLater = new Date(currentYear, currentMonthNum + 6, r.dueDay)
+          const diffTime = sixMonthsLater.getTime() - now.getTime()
+          daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+        }
       } else {
-        const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
-        daysUntilDue = daysInMonth - currentDay + r.dueDay
+        // Monthly frequency - existing logic
+        if (r.dueDay >= currentDay) {
+          daysUntilDue = r.dueDay - currentDay
+        } else {
+          const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
+          daysUntilDue = daysInMonth - currentDay + r.dueDay
+        }
       }
       return { ...r, daysUntilDue }
     })

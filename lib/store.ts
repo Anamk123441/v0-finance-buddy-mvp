@@ -40,7 +40,7 @@ export interface RecurringExpense {
   name: string
   amountUSD: number
   dueDay: number
-  frequency: "monthly"
+  frequency: "monthly" | "semester"
   category: string
   active: boolean
   notifiedMonths: string[]
@@ -112,6 +112,7 @@ interface AppStore {
     amountUSD: number
     dueDay: number
     category: string
+    frequency: "monthly" | "semester"
   }) => void
   getRecurringExpenses: () => RecurringExpense[]
   deleteRecurringExpense: (id: string) => void
@@ -287,7 +288,7 @@ export const useAppStore = create<AppStore>()(
           name: data.name,
           amountUSD: data.amountUSD,
           dueDay: data.dueDay,
-          frequency: "monthly",
+          frequency: data.frequency,
           category: data.category,
           active: true,
           notifiedMonths: [],
