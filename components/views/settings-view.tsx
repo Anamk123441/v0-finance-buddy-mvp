@@ -115,7 +115,7 @@ export function SettingsView() {
             </Button>
           ) : (
             <div className="space-y-3">
-              <p className="text-sm font-medium text-red-900 dark:text-red-100 text-center">
+              <p className="text-sm font-medium dark:text-red-100 text-center text-foreground">
                 Are you sure? This action cannot be undone.
               </p>
               <div className="grid grid-cols-2 gap-3">
