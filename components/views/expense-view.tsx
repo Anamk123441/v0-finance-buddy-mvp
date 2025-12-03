@@ -86,7 +86,7 @@ export function ExpenseView() {
           {user?.homeCurrency && user.homeCurrency !== "USD" && (
             <button
               onClick={toggleDisplayCurrency}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-orange-600 text-white transition-colors shadow-sm font-medium text-sm bg-foreground"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl text-secondary-foreground transition-colors shadow-sm font-medium text-sm bg-foreground"
               aria-label="Toggle currency"
             >
               <Repeat className="w-4 h-4" />
@@ -97,7 +97,7 @@ export function ExpenseView() {
       </header>
 
       <div className="grid grid-cols-2 gap-4">
-        <Card className="border-0 shadow-md bg-white dark:bg-slate-900">
+        <Card className="border-0 shadow-md bg-card">
           <div className="p-5 flex flex-col items-center space-y-3">
             <svg
               width="80"
@@ -117,15 +117,13 @@ export function ExpenseView() {
               <circle cx="80" cy="38" r="4" fill="#FB923C" opacity="0.7" />
             </svg>
             <div className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-wide dark:text-orange-400 text-slate-500">
-                Total Expenses
-              </p>
-              <p className="text-2xl font-bold mt-2 dark:text-orange-400 text-black">{formatAmount(totalExpense)}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Total Expenses</p>
+              <p className="text-2xl font-bold mt-2 text-orange-500">{formatAmount(totalExpense)}</p>
             </div>
           </div>
         </Card>
 
-        <Card className="border-0 shadow-md bg-white dark:bg-slate-900">
+        <Card className="border-0 shadow-md bg-card">
           <div className="p-5 flex flex-col items-center space-y-3">
             <svg
               width="80"
@@ -147,16 +145,14 @@ export function ExpenseView() {
               <circle cx="85" cy="57" r="2" fill="#93C5FD" />
             </svg>
             <div className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-blue-400">
-                Total Income
-              </p>
-              <p className="text-2xl font-bold mt-2 text-black dark:text-blue-400">{formatAmount(totalIncome)}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Total Income</p>
+              <p className="text-2xl font-bold mt-2 text-primary">{formatAmount(totalIncome)}</p>
             </div>
           </div>
         </Card>
       </div>
 
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg bg-card">
         <div className="p-6 space-y-4">
           <h2 className="font-semibold">Category-wise Expenses</h2>
           {categorySpending.length === 0 ? (
@@ -174,7 +170,7 @@ export function ExpenseView() {
         </div>
       </Card>
 
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg bg-card">
         <div className="p-6 space-y-4">
           <h2 className="font-semibold">All Expenses</h2>
           {monthExpenses.length === 0 ? (
@@ -197,12 +193,12 @@ export function ExpenseView() {
                 <circle cx="80" cy="38" r="4" fill="#FB923C" opacity="0.7" />
               </svg>
               <div className="text-center space-y-1">
-                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No expenses logged yet</p>
+                <p className="text-sm font-medium text-foreground">No expenses logged yet</p>
                 <p className="text-xs text-muted-foreground">Start tracking by adding your first expense</p>
               </div>
               <Button
                 onClick={() => setIsAddingExpense(true)}
-                className="bg-orange-600 hover:bg-orange-700 text-white h-9 text-sm font-medium rounded-xl shadow-sm"
+                className="bg-secondary text-secondary-foreground hover:bg-secondary h-9 text-sm font-medium rounded-xl shadow-sm"
                 size="sm"
               >
                 <Plus className="w-4 h-4 mr-1" />
@@ -222,7 +218,7 @@ export function ExpenseView() {
                     return (
                       <div
                         key={expense.id}
-                        className="flex justify-between items-center py-2 px-3 dark:bg-slate-800 rounded bg-[rgba(255,245,241,1)]"
+                        className="flex justify-between items-center py-2 px-3 rounded bg-orange-50"
                       >
                         <div className="flex-1">
                           <p className="font-medium text-sm">{expense.category}</p>
@@ -230,7 +226,7 @@ export function ExpenseView() {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <p className="font-semibold text-sm">{formatAmount(displayAmount)}</p>
+                            <p className="font-semibold text-sm text-foreground">{formatAmount(displayAmount)}</p>
                             <p className="text-xs text-muted-foreground">
                               ≈{" "}
                               {showHomeCurrency ? `$${altAmount.toFixed(2)}` : `${altCurrency} ${altAmount.toFixed(0)}`}
@@ -238,7 +234,7 @@ export function ExpenseView() {
                           </div>
                           <button
                             onClick={() => deleteExpense(expense.id)}
-                            className="text-red-500 hover:text-red-700"
+                            className="text-destructive hover:text-destructive/80"
                             aria-label="Delete expense"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -251,7 +247,7 @@ export function ExpenseView() {
               <div className="flex justify-center pt-2">
                 <Button
                   onClick={() => setIsAddingExpense(true)}
-                  className="bg-orange-600 hover:bg-orange-700 text-white h-9 text-sm font-medium rounded-xl shadow-sm"
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary h-9 text-sm font-medium rounded-xl shadow-sm"
                   size="sm"
                 >
                   <Plus className="w-4 h-4 mr-1" />
@@ -263,7 +259,7 @@ export function ExpenseView() {
         </div>
       </Card>
 
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg bg-card">
         <div className="p-6 space-y-4">
           <h2 className="font-semibold">All Income</h2>
           {monthIncomes.length === 0 ? (
@@ -288,12 +284,12 @@ export function ExpenseView() {
                 <circle cx="85" cy="57" r="2" fill="#93C5FD" />
               </svg>
               <div className="text-center space-y-1">
-                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">No income logged yet</p>
+                <p className="text-sm font-medium text-foreground">No income logged yet</p>
                 <p className="text-xs text-muted-foreground">Start tracking by adding your first income</p>
               </div>
               <Button
                 onClick={() => setIsAddingIncome(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white h-9 text-sm font-medium rounded-xl shadow-sm"
+                className="bg-primary text-primary-foreground hover:bg-primary h-9 text-sm font-medium rounded-xl shadow-sm"
                 size="sm"
               >
                 <Plus className="w-4 h-4 mr-1" />
@@ -313,7 +309,7 @@ export function ExpenseView() {
                     return (
                       <div
                         key={income.id}
-                        className="flex justify-between items-center py-2 px-3 dark:bg-green-900/20 rounded bg-[rgba(242,245,252,1)]"
+                        className="flex justify-between items-center py-2 px-3 rounded bg-[rgba(240,243,255,1)]"
                       >
                         <div className="flex-1">
                           <p className="font-medium text-sm">{income.source}</p>
@@ -329,7 +325,7 @@ export function ExpenseView() {
                           </div>
                           <button
                             onClick={() => deleteIncome(income.id)}
-                            className="text-red-500 hover:text-red-700"
+                            className="text-destructive hover:text-destructive/80"
                             aria-label="Delete income"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -342,7 +338,7 @@ export function ExpenseView() {
               <div className="flex justify-center pt-2">
                 <Button
                   onClick={() => setIsAddingIncome(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white h-9 text-sm font-medium rounded-xl shadow-sm"
+                  className="bg-primary text-primary-foreground hover:bg-primary h-9 text-sm font-medium rounded-xl shadow-sm"
                   size="sm"
                 >
                   <Plus className="w-4 h-4 mr-1" />
