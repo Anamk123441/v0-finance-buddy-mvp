@@ -6,7 +6,7 @@ import { useAppStore } from "@/lib/store"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { X, Check } from "lucide-react"
+import { X, Check, ChevronDown } from "lucide-react"
 import { getExchangeRate } from "@/lib/exchange-rate"
 
 const INCOME_SOURCES = ["Internship", "Part-time Job", "Scholarship", "Freelance", "Stipend", "Other"]
@@ -84,23 +84,27 @@ export function AddIncomeModal({ onClose }: AddIncomeModalProps) {
                   min="0"
                   required
                   autoFocus
+                  className="focus:border-black focus:ring-black"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="source">Source</Label>
-                <select
-                  id="source"
-                  value={source}
-                  onChange={(e) => setSource(e.target.value)}
-                  className="w-full h-10 px-3 rounded-md border border-input bg-background"
-                >
-                  {INCOME_SOURCES.map((src) => (
-                    <option key={src} value={src}>
-                      {src}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    id="source"
+                    value={source}
+                    onChange={(e) => setSource(e.target.value)}
+                    className="w-full h-10 px-3 rounded-md border border-input bg-background appearance-none"
+                  >
+                    {INCOME_SOURCES.map((src) => (
+                      <option key={src} value={src}>
+                        {src}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -111,10 +115,11 @@ export function AddIncomeModal({ onClose }: AddIncomeModalProps) {
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="e.g., Weekly paycheck"
+                  className="focus:border-black focus:ring-black"
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-green-600 text-white" size="lg" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-black text-white" size="lg" disabled={isLoading}>
                 {isLoading ? "Adding..." : "Add Income"}
               </Button>
             </form>

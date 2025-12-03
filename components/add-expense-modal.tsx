@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAppStore } from "@/lib/store"
-import { X, Check } from "lucide-react"
+import { X, Check, ChevronDown } from "lucide-react"
 import { getExchangeRate } from "@/lib/exchange-rate"
 
 const CATEGORIES = ["Food", "Groceries", "Rent", "Transport", "Utilities", "School", "Shopping", "Misc"]
@@ -112,7 +112,7 @@ export function AddExpenseModal({ onClose }: AddExpenseModalProps) {
                       onClick={() => setCurrencyType(type)}
                       className={`flex-1 py-2 px-3 rounded-lg border-2 font-medium text-sm transition ${
                         currencyType === type
-                          ? "border-red-500 bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300"
+                          ? "border-foreground bg-muted text-foreground"
                           : "border-input bg-background"
                       }`}
                     >
@@ -139,18 +139,21 @@ export function AddExpenseModal({ onClose }: AddExpenseModalProps) {
 
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
-                <select
-                  id="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full h-10 px-3 rounded-md border border-input bg-background"
-                >
-                  {CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    id="category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full h-10 px-3 rounded-md border border-input bg-background appearance-none"
+                  >
+                    {CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -164,7 +167,7 @@ export function AddExpenseModal({ onClose }: AddExpenseModalProps) {
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-orange-600 text-white" size="lg" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-black text-white" size="lg" disabled={isLoading}>
                 {isLoading ? "Adding..." : "Add Expense"}
               </Button>
             </form>

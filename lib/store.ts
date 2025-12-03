@@ -9,6 +9,7 @@ export interface User {
   createdAt: string
   updatedAt: string
   preferredDisplayCurrency: "USD" | "HOME"
+  lastKnownExchangeRate?: number
 }
 
 export interface Expense {
@@ -156,6 +157,7 @@ export const useAppStore = create<AppStore>()(
             preferredDisplayCurrency: data.homeCurrency ? "HOME" : "USD",
             createdAt: now,
             updatedAt: now,
+            lastKnownExchangeRate: undefined,
           },
         })
       },
@@ -181,6 +183,7 @@ export const useAppStore = create<AppStore>()(
 
         set((state) => ({
           incomes: [...state.incomes, income],
+          user: state.user ? { ...state.user, lastKnownExchangeRate: exchangeRate } : null,
         }))
       },
 
@@ -236,6 +239,7 @@ export const useAppStore = create<AppStore>()(
 
         set((state) => ({
           expenses: [...state.expenses, expense],
+          user: state.user ? { ...state.user, lastKnownExchangeRate: exchangeRate } : null,
         }))
 
         setTimeout(() => {

@@ -25,7 +25,10 @@ export function ExpenseView() {
   const monthExpenses = expenses.filter((exp) => exp.month === currentMonth && !exp.deleted)
   const monthIncomes = incomes.filter((inc) => inc.month === currentMonth && !inc.deleted)
 
-  const exchangeRate = monthExpenses.length > 0 ? monthExpenses[0].exchangeRateUsed : 1
+  const exchangeRate =
+    monthExpenses.length > 0
+      ? monthExpenses[0].exchangeRateUsed
+      : user?.lastKnownExchangeRate || (user?.homeCurrency === "INR" ? 83 : 1)
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 

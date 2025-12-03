@@ -20,9 +20,23 @@ export function DashboardView() {
   const totalUSD = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
   const totalHomeCurrency = monthExpenses.reduce((sum, exp) => sum + exp.amountHomeCurrency, 0)
 
-  const exchangeRate = monthExpenses.length > 0 ? monthExpenses[0].exchangeRateUsed : 1
+  const exchangeRate =
+    monthExpenses.length > 0
+      ? monthExpenses[0].exchangeRateUsed
+      : user?.lastKnownExchangeRate || (user?.homeCurrency === "INR" ? 83 : 1)
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
+
+  console.log("[v0] Currency Display Debug:", {
+    preferredCurrency: user?.preferredDisplayCurrency,
+    showHomeCurrency,
+    homeCurrency: user?.homeCurrency,
+    exchangeRate,
+    lastKnownRate: user?.lastKnownExchangeRate,
+    totalUSD,
+    totalHomeCurrency,
+    monthExpensesCount: monthExpenses.length,
+  })
 
   const budgetUSD = user?.monthlyBudget || 0
   const budgetDisplay = showHomeCurrency ? budgetUSD * exchangeRate : budgetUSD

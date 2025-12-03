@@ -125,7 +125,7 @@ export function RecurringSetupModal({ onClose }: RecurringSetupModalProps) {
                 </select>
               </div>
 
-              <Button type="submit" className="w-full bg-amber-600 text-white" size="lg">
+              <Button type="submit" className="w-full bg-black text-white" size="lg">
                 Add Recurring Expense
               </Button>
             </form>

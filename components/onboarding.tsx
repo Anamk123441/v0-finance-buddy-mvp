@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { useAppStore } from "@/lib/store"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Check } from "lucide-react"
 
 const CURRENCIES = [
   { code: "INR", symbol: "₹", name: "Indian Rupee" },
@@ -74,68 +74,122 @@ export function Onboarding() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-orange-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {step === "welcome" && (
-          <Card className="border-0 shadow-lg">
+          <Card className="border-0 shadow-xl">
             <div className="p-8 text-center space-y-6">
               <div className="flex justify-center mb-4">
                 <svg width="140" height="140" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Background circle */}
-                  <circle cx="60" cy="60" r="55" fill="#DBEAFE" opacity="0.5" />
+                  <circle cx="60" cy="60" r="55" fill="#DBEAFE" opacity="0.5">
+                    <animate attributeName="r" values="55;58;55" dur="3s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.5;0.7;0.5" dur="3s" repeatCount="indefinite" />
+                  </circle>
 
-                  {/* Character head */}
-                  <circle cx="60" cy="45" r="20" fill="#3B82F6" />
+                  <g>
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      values="0,0; 0,-3; 0,0"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                    <circle cx="60" cy="45" r="20" fill="#3B82F6" />
+                    <circle cx="53" cy="42" r="3" fill="white" />
+                    <circle cx="67" cy="42" r="3" fill="white" />
+                    <path d="M52 48 Q60 53 68 48" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" />
+                    <circle cx="45" cy="35" r="5" fill="#3B82F6" opacity="0.8" />
+                    <circle cx="75" cy="35" r="5" fill="#3B82F6" opacity="0.8" />
+                  </g>
 
-                  {/* Character body */}
-                  <ellipse cx="60" cy="80" rx="25" ry="20" fill="#3B82F6" />
+                  <ellipse cx="60" cy="80" rx="25" ry="20" fill="#3B82F6">
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      values="0,0; 0,-3; 0,0"
+                      dur="2s"
+                      repeatCount="indefinite"
+                    />
+                  </ellipse>
 
-                  {/* Eyes */}
-                  <circle cx="53" cy="42" r="3" fill="white" />
-                  <circle cx="67" cy="42" r="3" fill="white" />
+                  <g>
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      values="0,0; 0,-5; 0,0"
+                      dur="2.5s"
+                      begin="0.2s"
+                      repeatCount="indefinite"
+                    />
+                    <circle cx="30" cy="70" r="12" fill="#FB923C" />
+                    <text x="30" y="75" fontSize="14" fontWeight="bold" fill="white" textAnchor="middle">
+                      $
+                    </text>
+                  </g>
 
-                  {/* Smile */}
-                  <path d="M52 48 Q60 53 68 48" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" />
+                  <g>
+                    <animateTransform
+                      attributeName="transform"
+                      type="translate"
+                      values="0,0; 0,-5; 0,0"
+                      dur="2.5s"
+                      begin="0.4s"
+                      repeatCount="indefinite"
+                    />
+                    <circle cx="90" cy="70" r="12" fill="#FB923C" />
+                    <text x="90" y="75" fontSize="14" fontWeight="bold" fill="white" textAnchor="middle">
+                      $
+                    </text>
+                  </g>
 
-                  {/* Dollar coin left */}
-                  <circle cx="30" cy="70" r="12" fill="#FB923C" />
-                  <text x="30" y="75" fontSize="14" fontWeight="bold" fill="white" textAnchor="middle">
-                    $
-                  </text>
-
-                  {/* Dollar coin right */}
-                  <circle cx="90" cy="70" r="12" fill="#FB923C" />
-                  <text x="90" y="75" fontSize="14" fontWeight="bold" fill="white" textAnchor="middle">
-                    $
-                  </text>
-
-                  {/* Piggy bank ears */}
-                  <circle cx="45" cy="35" r="5" fill="#3B82F6" opacity="0.8" />
-                  <circle cx="75" cy="35" r="5" fill="#3B82F6" opacity="0.8" />
-
-                  {/* Sparkles */}
-                  <path d="M25 30 L26 32 L28 33 L26 34 L25 36 L24 34 L22 33 L24 32 Z" fill="#FB923C" />
-                  <path d="M95 40 L96 42 L98 43 L96 44 L95 46 L94 44 L92 43 L94 42 Z" fill="#FB923C" />
+                  <g>
+                    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" />
+                    <path d="M25 30 L26 32 L28 33 L26 34 L25 36 L24 34 L22 33 L24 32 Z" fill="#FB923C" />
+                  </g>
+                  <g>
+                    <animate
+                      attributeName="opacity"
+                      values="1;0.3;1"
+                      dur="1.5s"
+                      begin="0.5s"
+                      repeatCount="indefinite"
+                    />
+                    <path d="M95 40 L96 42 L98 43 L96 44 L95 46 L94 44 L92 43 L94 42 Z" fill="#FB923C" />
+                  </g>
                 </svg>
               </div>
 
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold text-balance">My Finance Buddy</h1>
-                <p className="text-muted-foreground text-balance">
+                <h1 className="text-3xl font-bold text-balance text-primary">My Finance Buddy</h1>
+                <p className="text-sm text-muted-foreground text-balance leading-relaxed">
                   Stay on top of your monthly spending, no matter where you are in the world
                 </p>
               </div>
 
-              <div className="bg-blue-50 rounded-2xl p-6 space-y-3 text-left border border-blue-100">
-                <p className="text-sm font-semibold text-blue-900">Designed for international students</p>
-                <ul className="text-sm space-y-2 text-blue-800">
-                  <li>✓ Track spending in USD + home currency</li>
-                  <li>✓ Monthly budget clarity</li>
-                  <li>✓ Motivational insights</li>
-                  <li>✓ Fast, simple expense logging</li>
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-5 space-y-3 text-left border border-blue-200/50 shadow-sm">
+                <p className="text-sm font-bold text-black">Designed for international students</p>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 text-sm text-foreground">
+                    <div className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-orange-300">
+                      <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                    </div>
+                    <span>Track spending in USD + home currency</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-sm text-foreground">
+                    <div className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-orange-300">
+                      <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                    </div>
+                    <span>Monthly budget clarity</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-sm text-foreground">
+                    <div className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-orange-300">
+                      <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                    </div>
+                    <span>Fast, simple expense &amp; income logging.           </span>
+                  </li>
                 </ul>
               </div>
 
               <Button
                 onClick={() => setStep("currency")}
-                className="w-full bg-blue-600 text-white h-12 rounded-2xl shadow-md"
+                className="w-full bg-black text-white h-12 rounded-2xl shadow-md text-base font-semibold"
                 size="lg"
               >
                 Let's Get Started
@@ -161,7 +215,7 @@ export function Onboarding() {
                     onClick={() => handleCurrencySelect(curr.code)}
                     aria-label={`Select ${curr.name}`}
                     className={`p-3 rounded-xl border-2 transition text-left text-sm font-medium ${
-                      selectedCurrency === curr.code ? "border-blue-500 bg-blue-50" : "border-slate-200"
+                      selectedCurrency === curr.code ? "border-black bg-muted" : "border-slate-200"
                     }`}
                   >
                     <div>{curr.symbol}</div>
@@ -208,7 +262,7 @@ export function Onboarding() {
                 <Button
                   onClick={handleBudgetSet}
                   disabled={!monthlyBudget}
-                  className="flex-1 bg-blue-600 text-white rounded-xl"
+                  className="flex-1 bg-black text-white rounded-xl"
                 >
                   Continue
                 </Button>
@@ -252,7 +306,7 @@ export function Onboarding() {
                       id="sample-category"
                       value={sampleCategory}
                       onChange={(e) => setSampleCategory(e.target.value)}
-                      className="w-full px-3 py-2.5 pr-10 border rounded-xl bg-background appearance-none"
+                      className="w-full h-10 px-3 rounded-md border border-input bg-background appearance-none"
                     >
                       <option>Food</option>
                       <option>Groceries</option>
@@ -274,7 +328,7 @@ export function Onboarding() {
                   <Button
                     onClick={handleSampleExpense}
                     disabled={!sampleAmount}
-                    className="flex-1 bg-blue-600 text-white rounded-xl"
+                    className="flex-1 bg-black text-white rounded-xl"
                   >
                     Complete Setup
                   </Button>
