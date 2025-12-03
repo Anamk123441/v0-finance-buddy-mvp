@@ -3,6 +3,7 @@
 import { useAppStore } from "@/lib/store"
 import { Card } from "@/components/ui/card"
 import { Repeat, Wallet, TrendingDown, CircleDollarSign, Receipt } from "lucide-react"
+import { formatNumberWithCommas } from "@/lib/utils"
 
 export function DashboardView() {
   const user = useAppStore((state) => state.user)
@@ -46,9 +47,9 @@ export function DashboardView() {
   const currencySymbol = showHomeCurrency ? user?.homeCurrency || "USD" : "USD"
   const formatAmount = (amount: number) => {
     if (showHomeCurrency && currencySymbol !== "USD") {
-      return `${currencySymbol} ${amount.toFixed(0)}`
+      return `${currencySymbol} ${formatNumberWithCommas(amount, 0)}`
     }
-    return `$${amount.toFixed(0)}`
+    return `$${formatNumberWithCommas(amount, 2)}`
   }
 
   return (
@@ -64,7 +65,7 @@ export function DashboardView() {
         {user?.homeCurrency && user.homeCurrency !== "USD" && (
           <button
             onClick={toggleDisplayCurrency}
-            className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-secondary/90 text-secondary-foreground transition-colors shadow-sm font-medium text-sm bg-foreground"
+            className="flex items-center gap-2 px-3 py-2 rounded-xl text-secondary-foreground transition-colors shadow-sm font-medium text-sm bg-foreground"
             aria-label="Toggle currency"
           >
             <Repeat className="w-4 h-4" />

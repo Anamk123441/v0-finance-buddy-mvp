@@ -128,7 +128,7 @@ export function Onboarding() {
 
               <Button
                 onClick={() => setStep("currency")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-2xl shadow-md"
+                className="w-full bg-blue-600 text-white h-12 rounded-2xl shadow-md"
                 size="lg"
               >
                 Let's Get Started
@@ -154,9 +154,7 @@ export function Onboarding() {
                     onClick={() => handleCurrencySelect(curr.code)}
                     aria-label={`Select ${curr.name}`}
                     className={`p-3 rounded-xl border-2 transition text-left text-sm font-medium ${
-                      selectedCurrency === curr.code
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-slate-200 hover:border-blue-300"
+                      selectedCurrency === curr.code ? "border-blue-500 bg-blue-50" : "border-slate-200"
                     }`}
                   >
                     <div>{curr.symbol}</div>
@@ -201,7 +199,7 @@ export function Onboarding() {
                 <Button
                   onClick={handleBudgetSet}
                   disabled={!monthlyBudget}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
+                  className="flex-1 bg-blue-600 text-white rounded-xl"
                 >
                   Continue
                 </Button>
@@ -263,7 +261,7 @@ export function Onboarding() {
                 <Button
                   onClick={handleSampleExpense}
                   disabled={!sampleAmount}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
+                  className="flex-1 bg-blue-600 text-white rounded-xl"
                 >
                   Complete Setup
                 </Button>

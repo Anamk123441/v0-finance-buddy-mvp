@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { RecurringSetupModal } from "@/components/recurring-setup-modal"
 import { Trash2, Plus, Repeat } from "lucide-react"
+import { formatNumberWithCommas } from "@/lib/utils"
 
 export function RemindersView() {
   const [isAdding, setIsAdding] = useState(false)
@@ -29,9 +30,9 @@ export function RemindersView() {
   const formatAmount = (amount: number) => {
     const displayAmount = showHomeCurrency ? amount * exchangeRate : amount
     if (showHomeCurrency && currencySymbol !== "USD") {
-      return `${currencySymbol} ${displayAmount.toFixed(0)}`
+      return `${currencySymbol} ${formatNumberWithCommas(displayAmount, 0)}`
     }
-    return `$${displayAmount.toFixed(2)}`
+    return `$${formatNumberWithCommas(displayAmount, 2)}`
   }
 
   return (
@@ -46,7 +47,7 @@ export function RemindersView() {
           {user?.homeCurrency && user.homeCurrency !== "USD" && (
             <button
               onClick={toggleDisplayCurrency}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white transition-colors shadow-sm font-medium text-sm"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl text-secondary-foreground transition-colors shadow-sm font-medium text-sm bg-foreground"
               aria-label="Toggle currency"
             >
               <Repeat className="w-4 h-4" />
@@ -60,11 +61,7 @@ export function RemindersView() {
         <div className="p-6 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="font-semibold">Recurring Bills</h2>
-            <Button
-              onClick={() => setIsAdding(true)}
-              size="sm"
-              className="hover:bg-blue-700 text-white rounded-xl bg-black"
-            >
+            <Button onClick={() => setIsAdding(true)} size="sm" className="text-white rounded-xl bg-black">
               <Plus className="w-4 h-4 mr-1" />
               Add Bill
             </Button>
@@ -75,20 +72,23 @@ export function RemindersView() {
               No recurring bills set up yet. Add one to get reminded!
             </p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {activeRecurring.map((recurring) => (
-                <div key={recurring.id} className="flex justify-between items-center py-3 border-b last:border-0">
-                  <div className="flex-1">
-                    <p className="font-medium">{recurring.name}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Due on day {recurring.dueDay} of each month • {recurring.category}
+                <div
+                  key={recurring.id}
+                  className="flex justify-between items-center py-3 px-4 rounded-xl bg-muted transition-colors"
+                >
+                  <div className="space-y-0.5 flex-1">
+                    <p className="font-medium text-sm">{recurring.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Due on day {recurring.dueDay} • {recurring.category}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <p className="font-semibold">{formatAmount(recurring.amountUSD)}</p>
+                    <p className="font-bold">{formatAmount(recurring.amountUSD)}</p>
                     <button
                       onClick={() => deleteRecurringExpense(recurring.id)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-destructive"
                       aria-label="Delete reminder"
                     >
                       <Trash2 className="w-4 h-4" />

@@ -66,7 +66,7 @@ export function AddIncomeModal({ onClose }: AddIncomeModalProps) {
           <>
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Add Income</h2>
-              <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
+              <button onClick={onClose} className="text-muted-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -114,12 +114,7 @@ export function AddIncomeModal({ onClose }: AddIncomeModalProps) {
                 />
               </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-green-600 hover:bg-green-700 text-white"
-                size="lg"
-                disabled={isLoading}
-              >
+              <Button type="submit" className="w-full bg-green-600 text-white" size="lg" disabled={isLoading}>
                 {isLoading ? "Adding..." : "Add Income"}
               </Button>
             </form>

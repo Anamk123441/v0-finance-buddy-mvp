@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { AddExpenseModal } from "@/components/add-expense-modal"
 import { AddIncomeModal } from "@/components/add-income-modal"
 import { Trash2, Repeat, Plus } from "lucide-react"
+import { formatNumberWithCommas } from "@/lib/utils"
 
 export function ExpenseView() {
   const [isAddingExpense, setIsAddingExpense] = useState(false)
@@ -49,9 +50,9 @@ export function ExpenseView() {
   const currencySymbol = showHomeCurrency ? user?.homeCurrency || "USD" : "USD"
   const formatAmount = (amount: number) => {
     if (showHomeCurrency && currencySymbol !== "USD") {
-      return `${currencySymbol} ${amount.toFixed(0)}`
+      return `${currencySymbol} ${formatNumberWithCommas(amount, 0)}`
     }
-    return `$${amount.toFixed(2)}`
+    return `$${formatNumberWithCommas(amount, 2)}`
   }
 
   const handleOpenExpenseModal = () => {
@@ -198,7 +199,7 @@ export function ExpenseView() {
               </div>
               <Button
                 onClick={() => setIsAddingExpense(true)}
-                className="bg-secondary text-secondary-foreground hover:bg-secondary h-9 text-sm font-medium rounded-xl shadow-sm"
+                className="bg-secondary text-secondary-foreground h-9 text-sm font-medium rounded-xl shadow-sm"
                 size="sm"
               >
                 <Plus className="w-4 h-4 mr-1" />
@@ -229,12 +230,14 @@ export function ExpenseView() {
                             <p className="font-semibold text-sm text-foreground">{formatAmount(displayAmount)}</p>
                             <p className="text-xs text-muted-foreground">
                               ≈{" "}
-                              {showHomeCurrency ? `$${altAmount.toFixed(2)}` : `${altCurrency} ${altAmount.toFixed(0)}`}
+                              {showHomeCurrency
+                                ? `$${formatNumberWithCommas(altAmount, 2)}`
+                                : `${altCurrency} ${formatNumberWithCommas(altAmount, 0)}`}
                             </p>
                           </div>
                           <button
                             onClick={() => deleteExpense(expense.id)}
-                            className="text-destructive hover:text-destructive/80"
+                            className="text-destructive"
                             aria-label="Delete expense"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -247,7 +250,7 @@ export function ExpenseView() {
               <div className="flex justify-center pt-2">
                 <Button
                   onClick={() => setIsAddingExpense(true)}
-                  className="bg-secondary text-secondary-foreground hover:bg-secondary h-9 text-sm font-medium rounded-xl shadow-sm"
+                  className="bg-secondary text-secondary-foreground h-9 text-sm font-medium rounded-xl shadow-sm"
                   size="sm"
                 >
                   <Plus className="w-4 h-4 mr-1" />
@@ -289,7 +292,7 @@ export function ExpenseView() {
               </div>
               <Button
                 onClick={() => setIsAddingIncome(true)}
-                className="bg-primary text-primary-foreground hover:bg-primary h-9 text-sm font-medium rounded-xl shadow-sm"
+                className="bg-primary text-primary-foreground h-9 text-sm font-medium rounded-xl shadow-sm"
                 size="sm"
               >
                 <Plus className="w-4 h-4 mr-1" />
@@ -309,7 +312,7 @@ export function ExpenseView() {
                     return (
                       <div
                         key={income.id}
-                        className="flex justify-between items-center py-2 px-3 rounded bg-[rgba(240,243,255,1)]"
+                        className="flex justify-between items-center py-2 px-3 rounded bg-[rgba(240,245,255,1)]"
                       >
                         <div className="flex-1">
                           <p className="font-medium text-sm">{income.source}</p>
@@ -320,12 +323,14 @@ export function ExpenseView() {
                             <p className="font-semibold text-sm text-foreground">{formatAmount(displayAmount)}</p>
                             <p className="text-xs text-muted-foreground">
                               ≈{" "}
-                              {showHomeCurrency ? `$${altAmount.toFixed(2)}` : `${altCurrency} ${altAmount.toFixed(0)}`}
+                              {showHomeCurrency
+                                ? `$${formatNumberWithCommas(altAmount, 2)}`
+                                : `${altCurrency} ${formatNumberWithCommas(altAmount, 0)}`}
                             </p>
                           </div>
                           <button
                             onClick={() => deleteIncome(income.id)}
-                            className="text-destructive hover:text-destructive/80"
+                            className="text-destructive"
                             aria-label="Delete income"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -338,7 +343,7 @@ export function ExpenseView() {
               <div className="flex justify-center pt-2">
                 <Button
                   onClick={() => setIsAddingIncome(true)}
-                  className="bg-primary text-primary-foreground hover:bg-primary h-9 text-sm font-medium rounded-xl shadow-sm"
+                  className="bg-primary text-primary-foreground h-9 text-sm font-medium rounded-xl shadow-sm"
                   size="sm"
                 >
                   <Plus className="w-4 h-4 mr-1" />

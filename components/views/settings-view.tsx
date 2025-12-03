@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Trash2 } from "lucide-react"
 
 const CURRENCIES = [
   { code: "INR", name: "Indian Rupee", symbol: "₹" },
@@ -87,7 +86,7 @@ export function SettingsView() {
 
           <Button
             onClick={handleSave}
-            className="w-full hover:bg-blue-700 text-white h-11 rounded-2xl shadow-md font-medium bg-black"
+            className="w-full text-white h-11 rounded-2xl shadow-md font-medium bg-black"
             size="lg"
           >
             {saved ? "Saved!" : "Save Changes"}
@@ -98,11 +97,8 @@ export function SettingsView() {
       <Card className="border-0 shadow-lg border-red-200 dark:border-red-800">
         <div className="p-6 space-y-4">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
-              <Trash2 className="w-5 h-5 text-red-700 dark:text-red-400" />
-            </div>
             <div className="flex-1">
-              <h2 className="font-semibold text-red-900 dark:text-red-100">Reset All Data</h2>
+              <h2 className="font-semibold dark:text-red-100 text-foreground">Reset All Data</h2>
               <p className="text-sm text-muted-foreground mt-1">
                 Delete all your expenses, income, bills, and settings. You'll return to the onboarding screen.
               </p>
@@ -113,7 +109,7 @@ export function SettingsView() {
             <Button
               onClick={() => setShowResetConfirm(true)}
               variant="outline"
-              className="w-full h-11 rounded-2xl border-red-300 text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20"
+              className="w-full h-11 rounded-2xl dark:border-red-800 dark:text-red-400 border-foreground text-foreground"
             >
               Reset All Data
             </Button>
@@ -126,7 +122,7 @@ export function SettingsView() {
                 <Button onClick={() => setShowResetConfirm(false)} variant="outline" className="h-11 rounded-2xl">
                   Cancel
                 </Button>
-                <Button onClick={handleResetData} className="h-11 rounded-2xl bg-red-600 hover:bg-red-700 text-white">
+                <Button onClick={handleResetData} className="h-11 rounded-2xl bg-red-600 text-white">
                   Yes, Reset All
                 </Button>
               </div>

@@ -12,7 +12,7 @@
   --popover-foreground: oklch(0.15 0.02 240);
   --primary: oklch(0.45 0.25 260); /* Blue */
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.7 0.15 50); /* Orange */
+  --secondary: rgb(255, 114, 27); /* Orange */
   --secondary-foreground: oklch(0.99 0 0);
   --muted: oklch(0.95 0.01 240);
   --muted-foreground: oklch(0.5 0.015 240);
@@ -120,5 +120,8 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+ound text-foreground;
   }
 }

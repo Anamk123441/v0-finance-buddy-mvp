@@ -113,7 +113,7 @@ export function AddExpenseModal({ onClose }: AddExpenseModalProps) {
                       className={`flex-1 py-2 px-3 rounded-lg border-2 font-medium text-sm transition ${
                         currencyType === type
                           ? "border-red-500 bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300"
-                          : "border-input bg-background hover:bg-accent"
+                          : "border-input bg-background"
                       }`}
                     >
                       {type === "USD" ? "USD $" : user?.homeCurrency}
@@ -164,12 +164,7 @@ export function AddExpenseModal({ onClose }: AddExpenseModalProps) {
                 />
               </div>
 
-              <Button
-                type="submit"
-                className="w-full hover:bg-red-700 text-white bg-orange-600"
-                size="lg"
-                disabled={isLoading}
-              >
+              <Button type="submit" className="w-full bg-orange-600 text-white" size="lg" disabled={isLoading}>
                 {isLoading ? "Adding..." : "Add Expense"}
               </Button>
             </form>
