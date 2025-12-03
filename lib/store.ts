@@ -616,6 +616,7 @@ export const useAppStore = create<AppStore>()(
           user: currentUser
             ? {
                 ...currentUser,
+                onboardingCompleted: false,
                 lastKnownExchangeRate: fallbackRate,
                 updatedAt: new Date().toISOString(),
               }
