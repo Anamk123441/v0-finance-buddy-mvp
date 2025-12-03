@@ -1,0 +1,33 @@
+export async function getExchangeRate(currency: string): Promise<number> {
+  try {
+    // Using exchangerate-api.com free tier (no API key required for basic usage)
+    const response = await fetch(`https://api.exchangerate-api.com/v4/latest/USD`)
+    const data = await response.json()
+
+    if (data.rates && data.rates[currency]) {
+      console.log("[v0] Exchange rate fetched:", currency, "=", data.rates[currency])
+      return data.rates[currency]
+    }
+
+    console.log("[v0] Currency not found, using fallback rate")
+    return getFallbackRate(currency)
+  } catch (error) {
+    console.error("[v0] Error fetching exchange rate:", error)
+    return getFallbackRate(currency)
+  }
+}
+
+function getFallbackRate(currency: string): number {
+  // Fallback rates if API fails
+  const fallbackRates: Record<string, number> = {
+    INR: 83,
+    EUR: 0.92,
+    GBP: 0.79,
+    CAD: 1.36,
+    AUD: 1.52,
+    JPY: 149,
+    CNY: 7.24,
+  }
+
+  return fallbackRates[currency] || 1
+}
