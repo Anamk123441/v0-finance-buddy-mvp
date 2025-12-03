@@ -15,11 +15,27 @@ export function MainApp() {
   return (
     <div className="min-h-screen pb-20 bg-[rgba(246,250,255,1)]">
       {/* Main Content */}
-      <div className="max-w-2xl mx-auto">
-        {activeTab === "dashboard" && <DashboardView />}
-        {activeTab === "cashflow" && <ExpenseView />}
-        {activeTab === "reminders" && <RemindersView />}
-        {activeTab === "settings" && <SettingsView />}
+      <div className="max-w-2xl mx-auto relative">
+        <div
+          className={`transition-opacity duration-200 ${activeTab === "dashboard" ? "block opacity-100" : "hidden opacity-0"}`}
+        >
+          <DashboardView />
+        </div>
+        <div
+          className={`transition-opacity duration-200 ${activeTab === "cashflow" ? "block opacity-100" : "hidden opacity-0"}`}
+        >
+          <ExpenseView />
+        </div>
+        <div
+          className={`transition-opacity duration-200 ${activeTab === "reminders" ? "block opacity-100" : "hidden opacity-0"}`}
+        >
+          <RemindersView />
+        </div>
+        <div
+          className={`transition-opacity duration-200 ${activeTab === "settings" ? "block opacity-100" : "hidden opacity-0"}`}
+        >
+          <SettingsView />
+        </div>
       </div>
 
       {/* Bottom Navigation */}

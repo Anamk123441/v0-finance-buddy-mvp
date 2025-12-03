@@ -22,10 +22,30 @@ export function RemindersView() {
   const now = new Date()
   const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
   const monthExpenses = expenses.filter((exp) => exp.month === currentMonth && !exp.deleted)
+
   const exchangeRate =
-    monthExpenses.length > 0
-      ? monthExpenses[0].exchangeRateUsed
-      : user?.lastKnownExchangeRate || (user?.homeCurrency === "INR" ? 83 : 1)
+    user?.lastKnownExchangeRate ||
+    (user?.homeCurrency === "INR"
+      ? 83
+      : user?.homeCurrency === "CAD"
+        ? 1.4
+        : user?.homeCurrency === "GBP"
+          ? 0.79
+          : user?.homeCurrency === "AUD"
+            ? 1.53
+            : user?.homeCurrency === "SGD"
+              ? 1.35
+              : user?.homeCurrency === "EUR"
+                ? 0.95
+                : user?.homeCurrency === "JPY"
+                  ? 149.5
+                  : user?.homeCurrency === "CNY"
+                    ? 7.24
+                    : user?.homeCurrency === "MXN"
+                      ? 17.2
+                      : user?.homeCurrency === "BRL"
+                        ? 4.95
+                        : 1)
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 
@@ -39,8 +59,8 @@ export function RemindersView() {
   }
 
   return (
-    <div className="p-4 space-y-6">
-      <header className="pt-6 pb-2">
+    <div className="px-4 pb-24 pt-6 space-y-6">
+      <header className="pb-2">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-balance">Bills</h1>

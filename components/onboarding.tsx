@@ -204,9 +204,9 @@ export function Onboarding() {
           <Card className="border-0 shadow-lg">
             <div className="p-8 space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-2">Where are you from?</h2>
+                <h2 className="text-2xl font-bold mb-2">What is your home currency?             </h2>
                 <p className="text-sm text-muted-foreground">
-                  Select your home currency to see how much you're spending
+                  See your income and expenses in USD, and in the currency you’re most familiar with, perfect for keeping track while studying abroad.
                 </p>
               </div>
 

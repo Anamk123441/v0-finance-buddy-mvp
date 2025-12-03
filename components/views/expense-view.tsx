@@ -26,15 +26,34 @@ export function ExpenseView() {
   const monthIncomes = incomes.filter((inc) => inc.month === currentMonth && !inc.deleted)
 
   const exchangeRate =
-    monthExpenses.length > 0
-      ? monthExpenses[0].exchangeRateUsed
-      : user?.lastKnownExchangeRate || (user?.homeCurrency === "INR" ? 83 : 1)
+    user?.lastKnownExchangeRate ||
+    (user?.homeCurrency === "INR"
+      ? 83
+      : user?.homeCurrency === "CAD"
+        ? 1.4
+        : user?.homeCurrency === "GBP"
+          ? 0.79
+          : user?.homeCurrency === "AUD"
+            ? 1.53
+            : user?.homeCurrency === "SGD"
+              ? 1.35
+              : user?.homeCurrency === "EUR"
+                ? 0.95
+                : user?.homeCurrency === "JPY"
+                  ? 149.5
+                  : user?.homeCurrency === "CNY"
+                    ? 7.24
+                    : user?.homeCurrency === "MXN"
+                      ? 17.2
+                      : user?.homeCurrency === "BRL"
+                        ? 4.95
+                        : 1)
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 
   const categoryMap = new Map<string, number>()
   monthExpenses.forEach((exp) => {
-    const amount = showHomeCurrency ? exp.amountHomeCurrency : exp.amountUSD
+    const amount = showHomeCurrency ? exp.amountUSD * exchangeRate : exp.amountUSD
     categoryMap.set(exp.category, (categoryMap.get(exp.category) || 0) + amount)
   })
 
@@ -43,11 +62,11 @@ export function ExpenseView() {
     .sort((a, b) => b.spent - a.spent)
 
   const totalIncome = showHomeCurrency
-    ? monthIncomes.reduce((sum, inc) => sum + inc.amountHomeCurrency, 0)
+    ? monthIncomes.reduce((sum, inc) => sum + inc.amountUSD * exchangeRate, 0)
     : monthIncomes.reduce((sum, inc) => sum + inc.amountUSD, 0)
 
   const totalExpense = showHomeCurrency
-    ? monthExpenses.reduce((sum, exp) => sum + exp.amountHomeCurrency, 0)
+    ? monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0)
     : monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
 
   const currencySymbol = showHomeCurrency ? user?.homeCurrency || "USD" : "USD"
@@ -59,28 +78,24 @@ export function ExpenseView() {
   }
 
   const handleOpenExpenseModal = () => {
-    console.log("[v0] Opening expense modal")
     setIsAddingExpense(true)
   }
 
   const handleCloseExpenseModal = () => {
-    console.log("[v0] Closing expense modal")
     setIsAddingExpense(false)
   }
 
   const handleOpenIncomeModal = () => {
-    console.log("[v0] Opening income modal")
     setIsAddingIncome(true)
   }
 
   const handleCloseIncomeModal = () => {
-    console.log("[v0] Closing income modal")
     setIsAddingIncome(false)
   }
 
   return (
-    <div className="p-4 space-y-6">
-      <header className="pt-6 pb-2">
+    <div className="px-4 pb-24 pt-6 space-y-6">
+      <header className="pb-2">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-balance">Cashflow</h1>
@@ -215,8 +230,8 @@ export function ExpenseView() {
                 {monthExpenses
                   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                   .map((expense) => {
-                    const displayAmount = showHomeCurrency ? expense.amountHomeCurrency : expense.amountUSD
-                    const altAmount = showHomeCurrency ? expense.amountUSD : expense.amountHomeCurrency
+                    const displayAmount = showHomeCurrency ? expense.amountUSD * exchangeRate : expense.amountUSD
+                    const altAmount = showHomeCurrency ? expense.amountUSD : expense.amountUSD * exchangeRate
                     const altCurrency = showHomeCurrency ? "USD" : user?.homeCurrency || "USD"
 
                     return (
@@ -308,8 +323,8 @@ export function ExpenseView() {
                 {monthIncomes
                   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                   .map((income) => {
-                    const displayAmount = showHomeCurrency ? income.amountHomeCurrency : income.amountUSD
-                    const altAmount = showHomeCurrency ? income.amountUSD : income.amountHomeCurrency
+                    const displayAmount = showHomeCurrency ? income.amountUSD * exchangeRate : income.amountUSD
+                    const altAmount = showHomeCurrency ? income.amountUSD : income.amountUSD * exchangeRate
                     const altCurrency = showHomeCurrency ? "USD" : user?.homeCurrency || "USD"
 
                     return (

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getExchangeRate } from "@/lib/exchange-rate"
 
 const CURRENCIES = [
   { code: "INR", name: "Indian Rupee", symbol: "₹" },
@@ -30,14 +31,25 @@ export function SettingsView() {
   const [monthlyBudget, setMonthlyBudget] = useState(user?.monthlyBudget?.toString() || "1000")
   const [saved, setSaved] = useState(false)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
 
-  const handleSave = () => {
-    updateUser({
-      homeCurrency,
-      monthlyBudget: Number.parseFloat(monthlyBudget) || 1000,
-    })
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      const exchangeRate = await getExchangeRate(homeCurrency)
+
+      updateUser({
+        homeCurrency,
+        monthlyBudget: Number.parseFloat(monthlyBudget) || 1000,
+        lastKnownExchangeRate: exchangeRate,
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } catch (error) {
+      console.error("[v0] Error saving settings:", error)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleResetData = () => {
@@ -88,10 +100,11 @@ export function SettingsView() {
 
           <Button
             onClick={handleSave}
+            disabled={isSaving}
             className="w-full text-white h-11 rounded-2xl shadow-md font-medium bg-black"
             size="lg"
           >
-            {saved ? "Saved!" : "Save Changes"}
+            {isSaving ? "Saving..." : saved ? "Saved!" : "Save Changes"}
           </Button>
         </div>
       </Card>

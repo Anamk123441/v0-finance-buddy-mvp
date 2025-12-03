@@ -149,6 +149,29 @@ export const useAppStore = create<AppStore>()(
 
       initializeUser: (data) => {
         const now = new Date().toISOString()
+        const fallbackRate =
+          data.homeCurrency === "INR"
+            ? 83
+            : data.homeCurrency === "CAD"
+              ? 1.4
+              : data.homeCurrency === "GBP"
+                ? 0.79
+                : data.homeCurrency === "AUD"
+                  ? 1.53
+                  : data.homeCurrency === "SGD"
+                    ? 1.35
+                    : data.homeCurrency === "EUR"
+                      ? 0.95
+                      : data.homeCurrency === "JPY"
+                        ? 149.5
+                        : data.homeCurrency === "CNY"
+                          ? 7.24
+                          : data.homeCurrency === "MXN"
+                            ? 17.2
+                            : data.homeCurrency === "BRL"
+                              ? 4.95
+                              : 1
+
         set({
           user: {
             id: generateId(),
@@ -158,7 +181,7 @@ export const useAppStore = create<AppStore>()(
             preferredDisplayCurrency: "HOME",
             createdAt: now,
             updatedAt: now,
-            lastKnownExchangeRate: undefined,
+            lastKnownExchangeRate: fallbackRate,
           },
         })
       },
@@ -166,7 +189,7 @@ export const useAppStore = create<AppStore>()(
       addIncome: (data) => {
         const now = new Date()
         const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
-        const exchangeRate = data.exchangeRate || 83
+        const exchangeRate = data.exchangeRate || get().user?.lastKnownExchangeRate || 1
 
         const income: Income = {
           id: generateId(),
@@ -221,7 +244,7 @@ export const useAppStore = create<AppStore>()(
       addExpense: (data) => {
         const now = new Date()
         const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
-        const exchangeRate = data.exchangeRate || 83
+        const exchangeRate = data.exchangeRate || get().user?.lastKnownExchangeRate || 1
 
         const expense: Expense = {
           id: generateId(),
@@ -565,8 +588,38 @@ export const useAppStore = create<AppStore>()(
       },
 
       resetAllData: () => {
+        const currentUser = get().user
+        const fallbackRate =
+          currentUser?.homeCurrency === "INR"
+            ? 83
+            : currentUser?.homeCurrency === "CAD"
+              ? 1.4
+              : currentUser?.homeCurrency === "GBP"
+                ? 0.79
+                : currentUser?.homeCurrency === "AUD"
+                  ? 1.53
+                  : currentUser?.homeCurrency === "SGD"
+                    ? 1.35
+                    : currentUser?.homeCurrency === "EUR"
+                      ? 0.95
+                      : currentUser?.homeCurrency === "JPY"
+                        ? 149.5
+                        : currentUser?.homeCurrency === "CNY"
+                          ? 7.24
+                          : currentUser?.homeCurrency === "MXN"
+                            ? 17.2
+                            : currentUser?.homeCurrency === "BRL"
+                              ? 4.95
+                              : 1
+
         set({
-          user: null,
+          user: currentUser
+            ? {
+                ...currentUser,
+                lastKnownExchangeRate: fallbackRate,
+                updatedAt: new Date().toISOString(),
+              }
+            : null,
           expenses: [],
           incomes: [],
           budgets: [],

@@ -17,13 +17,32 @@ export function DashboardView() {
 
   const monthExpenses = expenses.filter((exp) => exp.month === currentMonth && !exp.deleted)
 
-  const totalUSD = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
-  const totalHomeCurrency = monthExpenses.reduce((sum, exp) => sum + exp.amountHomeCurrency, 0)
-
   const exchangeRate =
-    monthExpenses.length > 0
-      ? monthExpenses[0].exchangeRateUsed
-      : user?.lastKnownExchangeRate || (user?.homeCurrency === "INR" ? 83 : 1)
+    user?.lastKnownExchangeRate ||
+    (user?.homeCurrency === "INR"
+      ? 83
+      : user?.homeCurrency === "CAD"
+        ? 1.4
+        : user?.homeCurrency === "GBP"
+          ? 0.79
+          : user?.homeCurrency === "AUD"
+            ? 1.53
+            : user?.homeCurrency === "SGD"
+              ? 1.35
+              : user?.homeCurrency === "EUR"
+                ? 0.95
+                : user?.homeCurrency === "JPY"
+                  ? 149.5
+                  : user?.homeCurrency === "CNY"
+                    ? 7.24
+                    : user?.homeCurrency === "MXN"
+                      ? 17.2
+                      : user?.homeCurrency === "BRL"
+                        ? 4.95
+                        : 1)
+
+  const totalUSD = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
+  const totalHomeCurrency = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0)
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 
@@ -199,44 +218,6 @@ export function DashboardView() {
           </div>
         </div>
       </Card>
-
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
-        }
-
-        @keyframes bounce-slow {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-6px);
-          }
-        }
-
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-          transform-origin: center;
-        }
-
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
-          transform-origin: center;
-        }
-
-        .animate-bounce-slow-delayed {
-          animation: bounce-slow 3s ease-in-out infinite;
-          animation-delay: 0.5s;
-          transform-origin: center;
-        }
-      `}</style>
 
       <div className="grid grid-cols-3 gap-3">
         <Card className="border-0 shadow-md bg-card">
