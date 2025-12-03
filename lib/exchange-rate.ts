@@ -18,7 +18,6 @@ export async function getExchangeRate(currency: string): Promise<number> {
 }
 
 function getFallbackRate(currency: string): number {
-  // Fallback rates if API fails
   const fallbackRates: Record<string, number> = {
     INR: 83,
     EUR: 0.92,
@@ -27,6 +26,9 @@ function getFallbackRate(currency: string): number {
     AUD: 1.52,
     JPY: 149,
     CNY: 7.24,
+    SGD: 1.34,
+    MXN: 17.2,
+    BRL: 4.97,
   }
 
   return fallbackRates[currency] || 1

@@ -10,12 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const CURRENCIES = [
   { code: "INR", name: "Indian Rupee", symbol: "₹" },
-  { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
-  { code: "KRW", name: "South Korean Won", symbol: "₩" },
-  { code: "EUR", name: "Euro", symbol: "€" },
   { code: "GBP", name: "British Pound", symbol: "£" },
+  { code: "CAD", name: "Canadian Dollar", symbol: "C$" },
+  { code: "AUD", name: "Australian Dollar", symbol: "A$" },
+  { code: "SGD", name: "Singapore Dollar", symbol: "S$" },
+  { code: "EUR", name: "Euro", symbol: "€" },
   { code: "JPY", name: "Japanese Yen", symbol: "¥" },
-  { code: "MXN", name: "Mexican Peso", symbol: "$" },
+  { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
+  { code: "MXN", name: "Mexican Peso", symbol: "Mex$" },
   { code: "BRL", name: "Brazilian Real", symbol: "R$" },
 ]
 

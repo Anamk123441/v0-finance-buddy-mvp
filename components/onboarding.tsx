@@ -48,10 +48,12 @@ export function Onboarding() {
     setStep("sample")
   }
 
-  const handleSampleExpense = () => {
+  const handleSampleExpense = async () => {
     if (!sampleAmount) return
 
-    const rate = 83 // Placeholder rate for demo
+    const { getExchangeRate } = await import("@/lib/exchange-rate")
+    const rate = await getExchangeRate(selectedCurrency)
+
     addExpense({
       amountUSD: Number.parseFloat(sampleAmount),
       category: sampleCategory,
@@ -182,7 +184,7 @@ export function Onboarding() {
                     <div className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-orange-300">
                       <Check className="w-3 h-3 text-white" strokeWidth={3} />
                     </div>
-                    <span>Fast, simple expense &amp; income logging.           </span>
+                    <span>Fast, simple expense &amp; income logging. </span>
                   </li>
                 </ul>
               </div>

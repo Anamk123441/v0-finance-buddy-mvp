@@ -155,7 +155,7 @@ export const useAppStore = create<AppStore>()(
             homeCurrency: data.homeCurrency,
             monthlyBudget: data.monthlyBudget,
             onboardingCompleted: false,
-            preferredDisplayCurrency: data.homeCurrency ? "HOME" : "USD",
+            preferredDisplayCurrency: "HOME",
             createdAt: now,
             updatedAt: now,
             lastKnownExchangeRate: undefined,
