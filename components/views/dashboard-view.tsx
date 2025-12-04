@@ -19,6 +19,9 @@ export function DashboardView() {
 
   const exchangeRate = user?.lastKnownExchangeRate || 1
 
+  const totalUSD = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
+  const totalHomeCurrency = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0)
+
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 
   console.log("[v0] Currency Display Debug:", {
@@ -27,8 +30,8 @@ export function DashboardView() {
     homeCurrency: user?.homeCurrency,
     exchangeRate,
     lastKnownRate: user?.lastKnownExchangeRate,
-    totalUSD: monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0),
-    totalHomeCurrency: monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0),
+    totalUSD,
+    totalHomeCurrency,
     monthExpensesCount: monthExpenses.length,
   })
 
@@ -100,9 +103,7 @@ export function DashboardView() {
 
   const budgetUSD = user?.monthlyBudget || 0
   const budgetDisplay = showHomeCurrency ? budgetUSD * exchangeRate : budgetUSD
-  const totalDisplay = showHomeCurrency
-    ? monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0)
-    : monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
+  const totalDisplay = showHomeCurrency ? totalHomeCurrency : totalUSD
   const remaining = budgetDisplay - totalDisplay
   const spent = totalDisplay / (budgetDisplay || 1)
 

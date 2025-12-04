@@ -52,6 +52,7 @@ export function AddIncomeModal({ onClose }: AddIncomeModalProps) {
   const [amount, setAmount] = useState("")
   const [source, setSource] = useState("Internship")
   const [note, setNote] = useState("")
+  const [currencyType, setCurrencyType] = useState<"USD" | "HOME">("USD")
   const [showSuccess, setShowSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -68,7 +69,7 @@ export function AddIncomeModal({ onClose }: AddIncomeModalProps) {
     const exchangeRate = user?.homeCurrency ? await getExchangeRate(user.homeCurrency) : 1
 
     addIncome({
-      amountUSD: amountNum,
+      amountUSD: currencyType === "USD" ? amountNum : amountNum / exchangeRate,
       source,
       note,
       exchangeRate,
@@ -138,7 +139,27 @@ export function AddIncomeModal({ onClose }: AddIncomeModalProps) {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="amount">Amount (USD)</Label>
+                <Label>Currency</Label>
+                <div className="flex gap-2">
+                  {(["USD", "HOME"] as const).map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setCurrencyType(type)}
+                      className={`flex-1 py-2 px-3 rounded-lg border-2 font-medium text-sm transition ${
+                        currencyType === type
+                          ? "border-foreground bg-muted text-foreground"
+                          : "border-input bg-background"
+                      }`}
+                    >
+                      {type === "USD" ? "USD $" : user?.homeCurrency}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="amount">Amount</Label>
                 <Input
                   id="amount"
                   type="number"

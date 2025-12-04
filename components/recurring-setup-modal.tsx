@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAppStore } from "@/lib/store"
 import { X, ChevronDown } from "lucide-react"
+import { getExchangeRate } from "@/lib/exchange-rate"
 
 const CATEGORIES = ["Food", "Groceries", "Rent", "Transport", "Utilities", "School", "Shopping", "Misc"]
 
@@ -53,34 +54,39 @@ export function RecurringSetupModal({ onClose }: RecurringSetupModalProps) {
   const [amount, setAmount] = useState("")
   const [dueDay, setDueDay] = useState("1")
   const [category, setCategory] = useState("Utilities")
-  const [frequency, setFrequency] = useState<"monthly" | "spring-semester" | "fall-semester">("monthly")
+  const [currencyType, setCurrencyType] = useState<"USD" | "HOME">("USD")
   const [showSuccess, setShowSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
+  const user = useAppStore((state) => state.user)
   const addRecurringExpense = useAppStore((state) => state.addRecurringExpense)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const amountNum = Number.parseFloat(amount)
     const dueDayNum = Number.parseInt(dueDay)
 
     if (!name || isNaN(amountNum) || amountNum <= 0 || isNaN(dueDayNum)) return
 
+    setIsLoading(true)
+    const exchangeRate = user?.homeCurrency ? await getExchangeRate(user.homeCurrency) : 1
+
     addRecurringExpense({
       name,
-      amountUSD: amountNum,
+      amountUSD: currencyType === "USD" ? amountNum : amountNum / exchangeRate,
       dueDay: dueDayNum,
       category,
-      frequency,
+      frequency: "monthly",
     })
 
     setShowSuccess(true)
+    setIsLoading(false)
     setTimeout(() => {
       setShowSuccess(false)
       setName("")
       setAmount("")
       setDueDay("1")
       setCategory("Utilities")
-      setFrequency("monthly")
       onClose()
     }, 1000)
   }
@@ -139,7 +145,27 @@ export function RecurringSetupModal({ onClose }: RecurringSetupModalProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="amount">Amount (USD)</Label>
+                <Label>Currency</Label>
+                <div className="flex gap-2">
+                  {(["USD", "HOME"] as const).map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setCurrencyType(type)}
+                      className={`flex-1 py-2 px-3 rounded-lg border-2 font-medium text-sm transition ${
+                        currencyType === type
+                          ? "border-foreground bg-muted text-foreground"
+                          : "border-input bg-background"
+                      }`}
+                    >
+                      {type === "USD" ? "USD $" : user?.homeCurrency}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="amount">Amount</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -150,23 +176,6 @@ export function RecurringSetupModal({ onClose }: RecurringSetupModalProps) {
                   min="0"
                   required
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="frequency">Frequency</Label>
-                <div className="relative">
-                  <select
-                    id="frequency"
-                    value={frequency}
-                    onChange={(e) => setFrequency(e.target.value as "monthly" | "spring-semester" | "fall-semester")}
-                    className="w-full h-10 px-3 rounded-md border border-input bg-background appearance-none"
-                  >
-                    <option value="monthly">Monthly</option>
-                    <option value="spring-semester">Spring Semester (Jan-May)</option>
-                    <option value="fall-semester">Fall Semester (Aug-Dec)</option>
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                </div>
               </div>
 
               <div className="space-y-2">
@@ -201,8 +210,8 @@ export function RecurringSetupModal({ onClose }: RecurringSetupModalProps) {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full bg-black text-white" size="lg">
-                Add Recurring Expense
+              <Button type="submit" className="w-full bg-black text-white" size="lg" disabled={isLoading}>
+                {isLoading ? "Adding..." : "Add Recurring Expense"}
               </Button>
             </form>
           </>
