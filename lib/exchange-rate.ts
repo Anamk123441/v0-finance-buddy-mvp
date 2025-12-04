@@ -1,11 +1,24 @@
 export async function getExchangeRate(currency: string): Promise<number> {
   try {
-    // Using exchangerate-api.com free tier (no API key required for basic usage)
-    const response = await fetch(`https://api.exchangerate-api.com/v4/latest/USD`)
-    const data = await response.json()
+    // Try Open Exchange Rates API first if API key is available
+    const apiKey = process.env.NEXT_PUBLIC_OPENEXCHANGERATES_API_KEY
 
-    if (data.rates && data.rates[currency]) {
-      return data.rates[currency]
+    if (apiKey) {
+      // Using Open Exchange Rates API with the provided API key
+      const response = await fetch(`https://openexchangerates.org/api/latest.json?app_id=${apiKey}&symbols=${currency}`)
+      const data = await response.json()
+
+      if (data.rates && data.rates[currency]) {
+        return data.rates[currency]
+      }
+    } else {
+      // Fallback to free exchangerate-api.com if no API key is configured
+      const response = await fetch(`https://api.exchangerate-api.com/v4/latest/USD`)
+      const data = await response.json()
+
+      if (data.rates && data.rates[currency]) {
+        return data.rates[currency]
+      }
     }
 
     return getFallbackRate(currency)
