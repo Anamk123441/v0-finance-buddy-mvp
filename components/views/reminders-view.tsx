@@ -53,7 +53,7 @@ export function RemindersView() {
               aria-label="Toggle currency"
             >
               <Repeat className="w-4 h-4" />
-              <span>{currencySymbol}</span>
+              <span>{showHomeCurrency ? "USD" : user.homeCurrency}</span>
             </button>
           )}
         </div>

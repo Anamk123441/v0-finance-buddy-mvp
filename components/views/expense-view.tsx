@@ -88,7 +88,7 @@ export function ExpenseView() {
               aria-label="Toggle currency"
             >
               <Repeat className="w-4 h-4" />
-              <span className="text-sm font-medium">{showHomeCurrency ? user.homeCurrency : "USD"}</span>
+              <span className="text-sm font-medium">{showHomeCurrency ? "USD" : user.homeCurrency}</span>
             </button>
           )}
         </div>

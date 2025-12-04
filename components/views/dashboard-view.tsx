@@ -125,7 +125,7 @@ export function DashboardView() {
             aria-label="Toggle currency"
           >
             <Repeat className="w-4 h-4" />
-            {showHomeCurrency ? user.homeCurrency : "USD"}
+            {showHomeCurrency ? "USD" : user.homeCurrency}
           </button>
         )}
       </header>
