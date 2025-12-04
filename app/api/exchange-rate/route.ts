@@ -11,64 +11,27 @@ export async function GET(request: Request) {
   try {
     const apiKey = process.env.OPENEXCHANGERATES_API_KEY
 
-    if (apiKey) {
-      // Try Open Exchange Rates API first
-      const oxrResponse = await fetch(
-        `https://openexchangerates.org/api/latest.json?app_id=${apiKey}&symbols=${currency}&base=USD`,
-      )
-
-      if (oxrResponse.ok) {
-        const data = await oxrResponse.json()
-        if (data.rates && data.rates[currency]) {
-          return NextResponse.json({ rate: data.rates[currency] })
-        }
-      }
+    if (!apiKey) {
+      return NextResponse.json({ error: "API key not configured" }, { status: 500 })
     }
 
-    // Fallback to exchangerate-api.com (free, no API key required)
-    const fallbackResponse = await fetch(`https://api.exchangerate-api.com/v4/latest/USD`)
+    const oxrResponse = await fetch(
+      `https://openexchangerates.org/api/latest.json?app_id=${apiKey}&symbols=${currency}&base=USD`,
+    )
 
-    if (fallbackResponse.ok) {
-      const data = await fallbackResponse.json()
-      if (data.rates && data.rates[currency]) {
-        return NextResponse.json({ rate: data.rates[currency] })
-      }
+    if (!oxrResponse.ok) {
+      return NextResponse.json({ error: "Failed to fetch exchange rate" }, { status: 500 })
     }
 
-    // If both APIs fail, return fallback rates
-    const fallbackRates: Record<string, number> = {
-      INR: 83,
-      GBP: 0.79,
-      CAD: 1.36,
-      AUD: 1.52,
-      SGD: 1.34,
-      EUR: 0.92,
-      JPY: 149,
-      CNY: 7.24,
-      MXN: 17.2,
-      BRL: 4.97,
+    const data = await oxrResponse.json()
+
+    if (data.rates && data.rates[currency]) {
+      return NextResponse.json({ rate: data.rates[currency] })
     }
 
-    const rate = fallbackRates[currency] || 1
-    return NextResponse.json({ rate })
+    return NextResponse.json({ error: "Currency not found" }, { status: 404 })
   } catch (error) {
     console.error("Exchange rate fetch error:", error)
-
-    // Return fallback rates on error
-    const fallbackRates: Record<string, number> = {
-      INR: 83,
-      GBP: 0.79,
-      CAD: 1.36,
-      AUD: 1.52,
-      SGD: 1.34,
-      EUR: 0.92,
-      JPY: 149,
-      CNY: 7.24,
-      MXN: 17.2,
-      BRL: 4.97,
-    }
-
-    const rate = fallbackRates[currency] || 1
-    return NextResponse.json({ rate })
+    return NextResponse.json({ error: "Failed to fetch exchange rate" }, { status: 500 })
   }
 }

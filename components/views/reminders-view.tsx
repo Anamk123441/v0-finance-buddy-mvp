@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { RecurringSetupModal } from "@/components/recurring-setup-modal"
 import { Trash2, Plus, Repeat } from "lucide-react"
 import { formatNumberWithCommas } from "@/lib/utils"
-import { getFallbackRate } from "@/lib/exchange-rate"
 
 export function RemindersView() {
   const [isAdding, setIsAdding] = useState(false)
@@ -24,7 +23,7 @@ export function RemindersView() {
   const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
   const monthExpenses = expenses.filter((exp) => exp.month === currentMonth && !exp.deleted)
 
-  const exchangeRate = user?.lastKnownExchangeRate || getFallbackRate(user?.homeCurrency || "USD")
+  const exchangeRate = user?.lastKnownExchangeRate || 1
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 

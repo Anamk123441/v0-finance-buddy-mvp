@@ -8,7 +8,6 @@ import { AddExpenseModal } from "@/components/add-expense-modal"
 import { AddIncomeModal } from "@/components/add-income-modal"
 import { Trash2, Repeat, Plus } from "lucide-react"
 import { formatNumberWithCommas } from "@/lib/utils"
-import { getFallbackRate } from "@/lib/exchange-rate"
 
 export function ExpenseView() {
   const [isAddingExpense, setIsAddingExpense] = useState(false)
@@ -26,7 +25,7 @@ export function ExpenseView() {
   const monthExpenses = expenses.filter((exp) => exp.month === currentMonth && !exp.deleted)
   const monthIncomes = incomes.filter((inc) => inc.month === currentMonth && !inc.deleted)
 
-  const exchangeRate = user?.lastKnownExchangeRate || getFallbackRate(user?.homeCurrency || "USD")
+  const exchangeRate = user?.lastKnownExchangeRate || 1
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 

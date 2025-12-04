@@ -4,7 +4,6 @@ import { useAppStore } from "@/lib/store"
 import { Card } from "@/components/ui/card"
 import { Repeat, Wallet, TrendingDown, CircleDollarSign, Receipt } from "lucide-react"
 import { formatNumberWithCommas } from "@/lib/utils"
-import { getFallbackRate } from "@/lib/exchange-rate"
 
 export function DashboardView() {
   const user = useAppStore((state) => state.user)
@@ -18,10 +17,7 @@ export function DashboardView() {
 
   const monthExpenses = expenses.filter((exp) => exp.month === currentMonth && !exp.deleted)
 
-  const exchangeRate = user?.lastKnownExchangeRate || getFallbackRate(user?.homeCurrency || "USD")
-
-  const totalUSD = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
-  const totalHomeCurrency = monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0)
+  const exchangeRate = user?.lastKnownExchangeRate || 1
 
   const showHomeCurrency = user?.preferredDisplayCurrency === "HOME"
 
@@ -31,8 +27,8 @@ export function DashboardView() {
     homeCurrency: user?.homeCurrency,
     exchangeRate,
     lastKnownRate: user?.lastKnownExchangeRate,
-    totalUSD,
-    totalHomeCurrency,
+    totalUSD: monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0),
+    totalHomeCurrency: monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0),
     monthExpensesCount: monthExpenses.length,
   })
 
@@ -104,7 +100,9 @@ export function DashboardView() {
 
   const budgetUSD = user?.monthlyBudget || 0
   const budgetDisplay = showHomeCurrency ? budgetUSD * exchangeRate : budgetUSD
-  const totalDisplay = showHomeCurrency ? totalHomeCurrency : totalUSD
+  const totalDisplay = showHomeCurrency
+    ? monthExpenses.reduce((sum, exp) => sum + exp.amountUSD * exchangeRate, 0)
+    : monthExpenses.reduce((sum, exp) => sum + exp.amountUSD, 0)
   const remaining = budgetDisplay - totalDisplay
   const spent = totalDisplay / (budgetDisplay || 1)
 
