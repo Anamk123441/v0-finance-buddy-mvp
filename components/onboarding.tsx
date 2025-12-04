@@ -28,6 +28,7 @@ export function Onboarding() {
   const [monthlyBudget, setMonthlyBudget] = useState<string>("")
   const [sampleAmount, setSampleAmount] = useState<string>("")
   const [sampleCategory, setSampleCategory] = useState<string>("Food")
+  const [sampleNote, setSampleNote] = useState<string>("")
 
   const initializeUser = useAppStore((state) => state.initializeUser)
   const addExpense = useAppStore((state) => state.addExpense)
@@ -57,7 +58,7 @@ export function Onboarding() {
     addExpense({
       amountUSD: Number.parseFloat(sampleAmount),
       category: sampleCategory,
-      note: "Welcome expense",
+      note: sampleNote || "Welcome expense",
       exchangeRate: rate,
     })
 
@@ -204,9 +205,10 @@ export function Onboarding() {
           <Card className="border-0 shadow-lg">
             <div className="p-8 space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-2">What is your home currency?             </h2>
+                <h2 className="text-2xl font-bold mb-2">What is your home currency?</h2>
                 <p className="text-sm text-muted-foreground">
-                  See your income and expenses in USD, and in the currency you’re most familiar with, perfect for keeping track while studying abroad.
+                  See your income and expenses in USD, and in the currency you’re most familiar with, perfect for
+                  keeping track while studying abroad.
                 </p>
               </div>
 
@@ -318,6 +320,22 @@ export function Onboarding() {
                       <option>School</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="sample-note" className="text-sm font-medium">
+                    Note (optional)
+                  </label>
+                  <div className="mt-2">
+                    <Input
+                      id="sample-note"
+                      type="text"
+                      placeholder="e.g., Bubble tea with friends"
+                      value={sampleNote}
+                      onChange={(e) => setSampleNote(e.target.value)}
+                      className="rounded-xl"
+                    />
                   </div>
                 </div>
               </div>
