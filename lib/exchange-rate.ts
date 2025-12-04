@@ -5,19 +5,17 @@ export async function getExchangeRate(currency: string): Promise<number> {
     const data = await response.json()
 
     if (data.rates && data.rates[currency]) {
-      console.log("[v0] Exchange rate fetched:", currency, "=", data.rates[currency])
       return data.rates[currency]
     }
 
-    console.log("[v0] Currency not found, using fallback rate")
     return getFallbackRate(currency)
   } catch (error) {
-    console.error("[v0] Error fetching exchange rate:", error)
+    console.error("Error fetching exchange rate:", error)
     return getFallbackRate(currency)
   }
 }
 
-function getFallbackRate(currency: string): number {
+export function getFallbackRate(currency: string): number {
   const fallbackRates: Record<string, number> = {
     INR: 83,
     EUR: 0.92,
